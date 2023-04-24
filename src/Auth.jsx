@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
     signInWithEmailAndPassword,
     onAuthStateChanged,
@@ -10,11 +10,14 @@ import { auth } from './firebase-config';
 export default (props)=> {
     const [email, setEmail]= useState('');
     const [password,setPassword]= useState('');
+    const [user, setUser]= useState(null)
     
-    const [user, setUser]= useState({})
-    onAuthStateChanged(auth,(currentUser)=>{
-        setUser(currentUser)
-    })
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+        });
+        return unsubscribe; // unsubscribe from the listener on unmount
+      }, []);
 
     const firebase= useFirebaseApp()
 
@@ -48,7 +51,7 @@ export default (props)=> {
     
                 <h2>Usuario Actual</h2>
 
-                {user?.email}
+                {user ? user.email : 'No hay usuario conectado'}
 
                 <button onClick={logOut}>Cerrar sesion</button>
         </div>
