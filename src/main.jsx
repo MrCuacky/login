@@ -13,5 +13,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
     </Suspense>
     </FirebaseAppProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
